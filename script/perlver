@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 package perlver;
-$perlver::VERSION = '1.38';
+$perlver::VERSION = '1.38_01';
 =pod
 
 =head1 NAME
@@ -36,6 +36,10 @@ functionality provided by L<Perl::MinimumVersion>.
 
 --blame option shows code which requires this version of perl
 
+--module option says that the argument is the name of a module
+which is installed locally. C<perlver> will find the path where the
+module is installed (in C<@INC>), and use that.
+
 The synopsis above pretty much covers all you need to know at this point.
 
 =cut
@@ -57,13 +61,14 @@ sub error          (@);
 sub format_version ($);
 sub dist           ($);
 
-use vars qw{$VERBOSE $BLAME $EXPLAIN};
+use vars qw{$VERBOSE $BLAME $EXPLAIN $MODULE};
 BEGIN {
 
 	# Configuration globals
 	$VERBOSE = '';
 	$BLAME   = '';
 	$EXPLAIN = '';
+	$MODULE  = '';
 
 	# Unbuffer output
 	$| = 1;
@@ -77,15 +82,23 @@ BEGIN {
 # Configuration
 
 GetOptions(
-	verbose => \$VERBOSE,
-	blame   => \$BLAME,
-	explain => \$EXPLAIN,
+	verbose    => \$VERBOSE,
+	blame      => \$BLAME,
+	explain    => \$EXPLAIN,
+    'module|m' => \$MODULE,
 );
 
 # Get the target
 my $target = shift @ARGV;
 unless ( $target ) {
 	error("You did not provide a file or directory to check");
+}
+
+if ($MODULE) {
+    require Module::Path;
+    my $module_name = $target;
+    $target = Module::Path::module_path($module_name)
+              || error("Couldn't find module '$module_name' installed locally");
 }
 
 print "\n";

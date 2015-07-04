@@ -1,5 +1,12 @@
 Revision history for Perl module Perl::MinimumVersion
 
+1.38_01 2015-07-04 NEILB
+    - Added -m[odule] flag to perlver, which says that the argument is a module
+      name rather than a path. Handy to find out what Perl version is required
+      by modules you're relying on.
+    - Added [MetaJSON] to dist.ini, so the release will include META.json.
+      Thanks to ETHER.
+
 1.38 2014-08-22
     - The doc for Perl::MinimumVersion now mentions perlver in both
       the DESCRIPTION and SEE ALSO sections. RT#98262 from pagenyon++.

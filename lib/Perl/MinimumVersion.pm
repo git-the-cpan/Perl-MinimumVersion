@@ -1,5 +1,5 @@
 package Perl::MinimumVersion;
-$Perl::MinimumVersion::VERSION = '1.38';
+$Perl::MinimumVersion::VERSION = '1.38_01';
 =pod
 
 =head1 NAME
